@@ -6,8 +6,8 @@ services:
       - 443:443
     restart: always
     volumes:
-      - ./nginx/conf/:/etc/nginx/conf.d/:ro
-      - ./certbot/www/:/var/www/certbot/:ro
+      - ./nginx/:/etc/nginx/conf.d/:ro
+      - certbot-www:/var/www/certbot/:ro
 
   blog:
     image: lrotermund/blog:v1.13.0
@@ -17,5 +17,9 @@ services:
   certbot:
     image: certbot/certbot:latest
     volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
+      - certbot-www:/var/www/certbot/:rw
+      - certbot-conf:/etc/letsencrypt/:rw
+
+volumes:
+  certbot-www:
+  certbot-conf:
