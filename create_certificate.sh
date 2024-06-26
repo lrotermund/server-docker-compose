@@ -1,31 +1,40 @@
 #!/bin/bash
 
-usage() { echo "Usage: $0 [-d <dry run>] [-D <domain>]" 1>&2; exit 1; }
+DRY_RUN="--dry-run"
 
-dry_run=""
-domain=""
+usage() {
+  echo "Usage: $0 --domain DOMAIN_NAME [--dry-run [true|false]]"
+  exit 1
+}
 
-while getopts ":d:D" o; do
-    case "${o}" in
-        d)
-            dry_run="--dry-run"
-            ;;
-        D)
-            domain=${OPTARG}
-            ;;
-        *)
-            usage
-            ;;
-    esac
+if [ $# -eq 0 ]; then
+  usage
+fi
+
+while [ "$1" != "" ]; do
+  case $1 in
+    --domain )
+      shift
+      DOMAIN=$1
+      ;;
+    --dry-run )
+      shift
+      DRY_RUN=$1
+      ;;
+    * )
+      usage
+      ;;
+  esac
+  shift
 done
-shift $((OPTIND-1))
 
-if [ -z "${domain}" ]; then
-    usage
+if [ -z "$DOMAIN" ]; then
+  echo "Error: Missing required argument '--domain'"
+  usage
 fi
 
 docker compose run --rm certbot certonly\
     --webroot\
     --webroot-path /var/www/certbot/\
-    $dry_run\
-    -d $domain
+    $DRY_RUN\
+    -d $DOMAIN
