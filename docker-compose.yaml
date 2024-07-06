@@ -29,6 +29,9 @@ services:
       MAX_PLAYERS: 4
       SERVER_NAME: CreeperComedyClub
       MOTD: "Booming with laughter, one creeper at a time!"
+      WHITELIST: |
+        Beeforce
+        Kimikong
     volumes:
       - ./mincraft/data:/data
 
