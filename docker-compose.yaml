@@ -3,11 +3,9 @@ services:
     image: nginx:latest
     depends_on:
       - blog
-      - minecraft
     ports:
       - 80:80
       - 443:443
-      - "25565:25565"
     restart: always
     volumes:
       - ./nginx/:/etc/nginx/conf.d/:ro
@@ -16,6 +14,22 @@ services:
 
   blog:
     image: lrotermund/blog:v1.13.0
+
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - certbot-www:/var/www/certbot/:rw
+      - certbot-conf:/etc/letsencrypt/:rw
+
+  minecraft-reverse-proxy:
+    image: itzg/mc-router:latest
+    depends_on:
+      - minecraft
+    environment:
+      MAPPING: |
+        mc.lukasrotermund.de=minecraft:25565
+    ports:
+      - "25565:25565"
 
   minecraft:
     image: itzg/minecraft-server:stable
@@ -34,12 +48,6 @@ services:
         Kimikong
     volumes:
       - ./minecraft/data:/data
-
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - certbot-www:/var/www/certbot/:rw
-      - certbot-conf:/etc/letsencrypt/:rw
 
 volumes:
   certbot-www:
