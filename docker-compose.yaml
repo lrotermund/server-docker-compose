@@ -33,7 +33,7 @@ services:
         Beeforce
         Kimikong
     volumes:
-      - ./mincraft/data:/data
+      - ./minecraft/data:/data
 
   certbot:
     image: certbot/certbot:latest
