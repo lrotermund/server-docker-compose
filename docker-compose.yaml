@@ -1,9 +1,13 @@
 services:
   nginx-reverse-proxy:
     image: nginx:latest
+    depends_on:
+      - blog
+      - minecraft
     ports:
       - 80:80
       - 443:443
+      - "25565:25565"
     restart: always
     volumes:
       - ./nginx/:/etc/nginx/conf.d/:ro
@@ -12,8 +16,21 @@ services:
 
   blog:
     image: lrotermund/blog:v1.13.0
-    depends_on:
-      - nginx-reverse-proxy
+
+  minecraft:
+    image: itzg/minecraft-server:stable
+    tty: true
+    stdin_open: true
+    environment:
+      EULA: TRUE
+      MEMORY: 8G
+      TZ: CEST
+      DIFFICULTY: normal
+      MAX_PLAYERS: 4
+      SERVER_NAME: CreeperComedyClub
+      MOTD: "Booming with laughter, one creeper at a time!"
+    volumes:
+      - ./mincraft/data:/data
 
   certbot:
     image: certbot/certbot:latest
