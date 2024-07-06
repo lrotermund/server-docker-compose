@@ -46,6 +46,9 @@ services:
       WHITELIST: |
         Beeforce
         Kimikong
+      OPS: |
+        Beeforce
+        Kimikong
     volumes:
       - ./minecraft/data:/data
 
