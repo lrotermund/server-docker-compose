@@ -52,6 +52,54 @@ services:
     volumes:
       - ./minecraft/data:/data
 
+  teamspeak:
+    image: teamspeak
+    restart: always
+    ports:
+      - 9987:9987/udp
+      - 10011:10011
+      - 30033:30033
+    environment:
+      TS3SERVER_DB_PLUGIN: ts3db_mariadb
+      TS3SERVER_DB_SQLCREATEPATH: create_mariadb
+      TS3SERVER_DB_HOST: mariadb
+      TS3SERVER_DB_WAITUNTILREADY: 30
+      TS3SERVER_LICENSE: accept
+    secrets:
+      - mariadb_database
+      - mariadb_user
+      - mariadb_pw
+    entrypoint: ./teamspeak/entrypoint.sh
+    volumes:
+      - ./teamspeak/data:/var/ts3server
+
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mariadb_root_pw
+      MYSQL_DATABASE_FILE: /run/secrets/mariadb_database
+      MYSQL_USER_FILE: /run/secrets/mariadb_user
+      MYSQL_PASSWORD_FILE: /run/secrets/mariadb_pw
+    volumes:
+      - database:/var/lib/mysql
+    secrets:
+      - mariadb_root_pw
+      - mariadb_database
+      - mariadb_user
+      - mariadb_pw
+
+secrets:
+  mariadb_root_pw:
+    file: ./.mariadb_root_pw.txt
+  mariadb_database:
+    file: ./.mariadb_database.txt
+  mariadb_user:
+    file: ./.mariadb_user.txt
+  mariadb_pw:
+    file: ./.mariadb_pw.txt
+
 volumes:
   certbot-www:
   certbot-conf:
+  database:

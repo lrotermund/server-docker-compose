@@ -1,1 +1,8 @@
 minecraft/data/
+teamspeak/data/
+
+# secrets
+.mariadb_root_pw.txt
+.mariadb_database.txt
+.mariadb_user.txt
+.mariadb_pw.txt
