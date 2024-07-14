@@ -1,4 +1,4 @@
-minecraft/data/
+minecraft/
 teamspeak/data/
 
 docker-compose.override.yaml
