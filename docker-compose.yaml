@@ -14,7 +14,8 @@ services:
       - certbot-conf:/etc/nginx/ssl/:ro
 
   blog:
-    image: lrotermund/blog:v1.13.0
+    image: lrotermund/blog:v1.14.0
+    restart: always
 
   certbot:
     image: certbot/certbot:latest
