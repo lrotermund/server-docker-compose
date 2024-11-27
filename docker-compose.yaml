@@ -4,3 +4,16 @@ services:
     restart: always
     ports:
       - 127.0.0.1:8000:80
+
+  freshrss:
+    image: lscr.io/linuxserver/freshrss:latest
+    container_name: freshrss
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - ./rss:/config
+    ports:
+      - 127.0.0.1:8010:80
+    restart: always

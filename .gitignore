@@ -1,4 +1,5 @@
 minecraft/
 teamspeak/data/
+rss/
 
 docker-compose.override.yaml
